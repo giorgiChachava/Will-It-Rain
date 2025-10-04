@@ -1,5 +1,11 @@
-import { X, MapPin, Users, Cloud, Wind, Droplets } from 'lucide-react';
+import { X, MapPin, Users, Cloud, Wind, Droplets, CloudDownload, Snowflake, Rainbow, CloudRain, Thermometer, Sun } from 'lucide-react';
 import { Button } from './ui/button';
+
+const hot_percent = 66
+const cold_percent = 46
+const wind_percent = 33
+const wet_percent = 25
+const uncomfortable_percent = 25
 
 interface City {
   name: string;
@@ -29,11 +35,11 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
       
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 h-full bg-card border-r border-border shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-        style={{ width: 'var(--sidebar-width)', maxWidth: '90vw' }}
-      >
+      className={`fixed left-0 top-0 h-full bg-black/95 border-r border-gray-800 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}
+      style={{ width: 'var(--sidebar-width)', minWidth: '60vw', maxWidth: '90vw' }}
+    >
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border bg-gradient-to-r from-primary/5 to-accent/5">
@@ -42,8 +48,8 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
                 <MapPin className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-foreground">{city.name}</h2>
-                <p className="text-sm text-muted-foreground">{city.country}</p>
+                <h2 className="text-2xl font-bold text-white">{city.name}</h2>
+                <p className="text-sm text-white">{city.country}</p>
               </div>
             </div>
             <Button
@@ -57,79 +63,100 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div
+          className="flex-1 overflow-y-auto p-6 space-y-6 relative"
+          style={{
+            backgroundImage: `url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg/330px-View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg')`,
+            backgroundSize: 'cover',       // image covers the div
+            backgroundPosition: 'center',  // centered nicely
+            backgroundRepeat: 'no-repeat', 
+          // no tiling
+          }}
+        >
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 p-4 rounded-lg">
-                <Users className="w-5 h-5 text-primary mb-2" />
-                <p className="text-xs text-muted-foreground">Population</p>
-                <p className="text-lg font-semibold text-foreground">{city.population || 'N/A'}</p>
-              </div>
-              <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 dark:from-cyan-950 dark:to-cyan-900 p-4 rounded-lg">
-                <MapPin className="w-5 h-5 text-accent mb-2" />
-                <p className="text-xs text-muted-foreground">Coordinates</p>
-                <p className="text-xs font-mono text-foreground">
-                  {city.coordinates[1].toFixed(2)}°, {city.coordinates[0].toFixed(2)}°
-                </p>
-              </div>
-            </div>
 
             {/* Weather Data Placeholder */}
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <Cloud className="w-5 h-5 text-primary" />
-                Weather Data
-              </h3>
-              <div className="space-y-3">
-                <div className="bg-muted/50 rounded-lg p-4 animate-pulse">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-muted-foreground">Temperature</span>
-                    <div className="h-6 w-16 bg-muted rounded"></div>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full"></div>
+              <div className="space-y-1">
+                <div className="bg-black rounded-lg p-4 w-11/12 sm:w-64 md:w-72 lg:w-80 h-15">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-white flex items-center gap-2">
+                    <Sun className="w-4 h-4" />
+                    Very Hot
+                  </span>
+                  <div className="h-6 w-16 bg-gray-700 rounded flex items-center justify-center text-white font-bold">{hot_percent}%</div>
                 </div>
-                
-                <div className="bg-muted/50 rounded-lg p-4 animate-pulse">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-muted-foreground flex items-center gap-2">
-                      <Wind className="w-4 h-4" />
-                      Wind Speed
-                    </span>
-                    <div className="h-6 w-16 bg-muted rounded"></div>
+                <div className="h-2 bg-gray-700 rounded-full">
+                  <div className="h-2 bg-gray-700 rounded-full">
+                    <div
+                      className="h-2 rounded-full"
+                      style={{width: `${hot_percent}%`,background: 'linear-gradient(90deg, rgb(255,0,0), rgb(255,69,0), rgb(255,140,0))'}} // <-- fill according to percentage
+                    ></div>
                   </div>
-                  <div className="h-2 bg-muted rounded-full"></div>
-                </div>
-                
-                <div className="bg-muted/50 rounded-lg p-4 animate-pulse">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-muted-foreground flex items-center gap-2">
-                      <Droplets className="w-4 h-4" />
-                      Humidity
-                    </span>
-                    <div className="h-6 w-16 bg-muted rounded"></div>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full"></div>
                 </div>
               </div>
+                
+               <div className="bg-black rounded-lg p-4 w-11/12 sm:w-64 md:w-72 lg:w-80 h-15">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-white flex items-center gap-2">
+                    <Snowflake className="w-4 h-4" />
+                    Very Cold
+                  </span>
+                  <div className="h-6 w-16 bg-gray-700 rounded flex items-center justify-center text-white font-bold">{cold_percent}%</div>
+                </div>
+                <div className="h-2 bg-gray-700 rounded-full">
+                  <div className="h-2 bg-gray-700 rounded-full">
+                    <div
+                      className="h-2 rounded-full"
+                      style={{width: `${cold_percent}%`,background: 'linear-gradient(90deg, rgb(0,191,255), rgb(135,206,250), rgb(224,255,255))'}} // <-- fill according to percentage
+                    ></div>
+                  </div>
+                </div>
+              </div>
+                
+                 <div className="bg-black rounded-lg p-4 w-11/12 sm:w-64 md:w-72 lg:w-80">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-white flex items-center gap-2">
+                      <Wind className="w-4 h-4" />
+                      Very Windy
+                    </span>
+                    <div className="h-6 w-16 bg-gray-700 rounded flex items-center justify-center text-white font-bold">{wind_percent}%</div>
+                </div>
+                <div className="h-2 bg-gray-700 rounded-full">
+                  <div className="h-2 bg-gray-700 rounded-full">
+                    <div
+                      className="h-2 rounded-full"
+                      style={{width: `${wind_percent}%`,background: 'linear-gradient(90deg, rgb(135,206,250), rgb(175,238,238), rgb(224,255,255))'}} // <-- fill according to percentage
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+                 <div className="bg-black rounded-lg p-4 w-11/12 sm:w-64 md:w-72 lg:w-80">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-white flex items-center gap-2">
+                      <CloudRain className="w-4 h-4" />
+                        Very Wet
+                    </span>
+                    <div className="h-6 w-16 bg-gray-700 rounded flex items-center justify-center text-white font-bold">{wet_percent}%</div>
+                </div>
+                <div className="h-2 bg-gray-700 rounded-full">
+                  <div className="h-2 bg-gray-700 rounded-full">
+                    <div
+                      className="h-2 rounded-full"
+                      style={{width: `${wet_percent}%`,background: 'linear-gradient(90deg, rgb(0,105,148), rgb(0,168,232), rgb(173,216,230))'}} // <-- fill according to percentage
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+          
+              </div>
+
               
-              <p className="text-xs text-center text-muted-foreground mt-4 p-3 bg-accent/10 rounded-lg border border-accent/20">
-                Weather data integration coming soon
-              </p>
             </div>
 
             {/* Future Features Placeholder */}
-            <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-foreground">Forecast</h3>
-              <div className="grid grid-cols-3 gap-2">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="bg-muted/50 rounded-lg p-3 animate-pulse">
-                    <div className="h-4 w-12 bg-muted rounded mb-2"></div>
-                    <div className="h-8 w-8 bg-muted rounded-full mx-auto mb-2"></div>
-                    <div className="h-3 w-full bg-muted rounded"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>

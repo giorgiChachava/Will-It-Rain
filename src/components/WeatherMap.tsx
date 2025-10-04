@@ -108,11 +108,12 @@ const WeatherMap = ({ onCitySelect, apiKey }: WeatherMapProps) => {
     
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
+      style: 'mapbox://styles/mapbox/outdoors-v12',
       zoom: 2,
       center: [15, 30],
       pitch: 0,
     });
+
 
     map.current.addControl(
       new mapboxgl.NavigationControl({
@@ -124,7 +125,7 @@ const WeatherMap = ({ onCitySelect, apiKey }: WeatherMapProps) => {
     const ZOOM_THRESHOLD = 5;
 
     map.current.on('load', () => {
-      cities.forEach((city) => {
+    cities.forEach((city) => {
         const el = document.createElement('div');
         el.className = 'city-marker';
         el.style.display = 'none'; // Hidden by default

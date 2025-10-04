@@ -64,10 +64,6 @@ const ApiKeyInput = ({ onSubmit }: ApiKeyInputProps) => {
             <ExternalLink className="w-4 h-4 mr-2" />
             Get Free API Key
           </Button>
-          <p className="text-xs text-center text-muted-foreground">
-            For production use, consider enabling{' '}
-            <span className="font-semibold text-primary">Lovable Cloud</span> for secure API key storage
-          </p>
         </div>
       </div>
     </div>
