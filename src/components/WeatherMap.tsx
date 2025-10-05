@@ -8,14 +8,12 @@ interface City {
   name: string;
   country: string;
   coordinates: [number, number];
+  population?: string;
   imag?: string;
 }
 
 const cities: City[] = [
-  
-  // Europe
-  { name: 'London', country: 'United Kingdom', coordinates: [-0.1278, 51.5074], imag:"https://img.freepik.com/free-photo/big-ben-westminster-bridge-sunset-london-uk_268835-1395.jpg?semt=ais_hybrid&w=740&q=80" },
-
+  // Americas
 { name: 'Kyiv', country: 'Ukraine', coordinates: [30.5245, 50.44504], imag :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9KUertF4ZsdnKcn-tjgi2VRNcbBJyxh3K5w&s" },
 
 { name: 'Ankara', country: 'Turkey', coordinates: [32.8597, 39.9334], imag :"https://cdn-gaecj.nitrocdn.com/JMwuRIbFKRytZpZBQQGkRvqmTfGyKhHA/assets/images/optimized/rev-a7ce373/turkeytravelplanner.com/wp-content/uploads/2023/08/entrance-ankara-castle.jpg" },
@@ -69,8 +67,6 @@ const cities: City[] = [
 
 { name: 'Sofia', country: 'Bulgaria', coordinates: [23.3219, 42.6977], imag :"https://media.istockphoto.com/id/615112296/photo/sofia-in-orange.jpg?s=612x612&w=0&k=20&c=9TRmdISuA9psiXjMRJqtwuusm32fxJvRqQFT8fwjseg=" },
 
-{ name: 'Zagreb', country: 'Croatia', coordinates: [23.3219, 42.6977], imag :"https://media.istockphoto.com/id/615112296/photo/sofia-in-orange.jpg?s=612x612&w=0&k=20&c=9TRmdISuA9psiXjMRJqtwuusm32fxJvRqQFT8fwjseg=" },
-
 { name: 'Nicosia', country: 'Cyprus', coordinates: [33.3823, 35.3823], imag :"https://media.istockphoto.com/id/1195524554/photo/beautiful-aerial-view-over-old-town-of-nicosia-northern-cyprus-and-selimiye-mosque-in-cyprus.jpg?s=612x612&w=0&k=20&c=ug6yssEQ0CKW2XF4EuWT3dfO6E9p1x0taej1WWH0YxA=" },
 
 { name: 'Prague', country: 'Czech Republic', coordinates: [14.4378, 50.0755], imag :"https://media.istockphoto.com/id/1479817683/photo/prague-castle-with-st-vitus-cathedral-over-lesser-town-at-sunset-czech-republic.jpg?s=612x612&w=0&k=20&c=uOxC8wTORyQhisR2YX341sfGQj7Q8o9sWkBcsCzD674=" },
@@ -113,33 +109,14 @@ const cities: City[] = [
 
 
 { name: 'Valletta', country: 'Malta', coordinates: [14.5141, 35.8992], imag :"https://e1.pxfuel.com/desktop-wallpaper/575/134/desktop-wallpaper-and-laptop-screen-of-valletta-malta-valletta.jpg" },
-
-
-
 { name: 'Amsterdam', country: 'Netherlands', coordinates: [4.9041, 52.3676], imag :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6D1bp3IsMB7TBXRcfZbt0vhLo9ylki-6wpQ&s" },
-
-
 { name: 'Warsaw', country: 'Poland', coordinates: [21.0122, 52.2297], imag :"https://t4.ftcdn.net/jpg/02/08/63/27/360_F_208632747_k54pqSxIwMblIc7HlZjrtlEBfWwjPR4z.jpg" },
-
-
-
 { name: 'Lisbon', country: 'Portugal', coordinates: [-9.1393, 38.7223], imag :"https://w0.peakpx.com/wallpaper/160/688/HD-wallpaper-lisbon-portugal-at-sunset-cityscapes-sky-clouds-sunsets-nature.jpg" },
-
-
 { name: 'Bucharest', country: 'Romania', coordinates: [26.1025, 44.4268], imag :"https://wallpapercat.com/w/full/5/6/1/1552846-2200x1352-desktop-hd-bucharest-wallpaper-image.jpg" },
-
-
 { name: 'Bratislava', country: 'Slovakia', coordinates: [17.1072, 48.1478], imag :"https://media.istockphoto.com/id/475905767/photo/bratislava-slovakia.jpg?s=612x612&w=0&k=20&c=3Tr3Oegx5CSKqnG7Qoz1abxsesDKgZ1wy0B3NYwvjvM=" },
-
-
 { name: 'Ljubljana', country: 'Slovenia', coordinates: [14.5058, 46.0569], imag :"https://t4.ftcdn.net/jpg/02/62/85/33/360_F_262853364_WBOFJflFYD1hotaI8VOJZlJRcq6vpTAC.jpg" },
-
-
 { name: 'Madrid', country: 'Spain', coordinates: [-3.7033, 40.4167], imag :"https://media.istockphoto.com/id/514769480/photo/madrid-spain-on-gran-via.jpg?s=612x612&w=0&k=20&c=5PDxqwnxYmudMHIs3ZkRJRE64153nnw-hJTH2zdryzc=" },
-
-
 { name: 'Stockholm', country: 'Sweden', coordinates: [18.0656, 59.3327], imag :"https://hips.hearstapps.com/hmg-prod/images/old-town-in-stockholm-sweden-royalty-free-image-506175664-1540478210.jpg" },
-
 { name: 'Atlanta', country: 'United States', coordinates: [-84.3885, 33.7501], imag :"https://i.pinimg.com/736x/86/0c/0b/860c0b3ccdde12db711cf9826211846f.jpg"},
 { name: 'Chicago', country: 'United States', coordinates: [-87.6324, 41.8832],imag : "https://i.pinimg.com/736x/d7/33/11/d733111fc3366c1a1cf3b5a7cc7e5369.jpg"},
 { name: 'New York', country: 'United States', coordinates: [-74.0060, 40.7128],imag : "https://i.pinimg.com/1200x/e6/07/ec/e607ecdbebfd3c3ea45d853339df5023.jpg"},
@@ -161,7 +138,6 @@ const cities: City[] = [
 { name: 'Wyoming', country: 'United States', coordinates: [-107.2903, 43.0760],imag : "https://res.cloudinary.com/aenetworks/image/upload/c_fill,ar_2,w_3840,h_1920,g_auto/dpr_auto/f_auto/q_auto:eco/v1/gettyimages-540063269?_a=BAVAZGID0"},
 { name: 'California', country: 'United States', coordinates: [-119.4179, 36.7783],imag : "https://lh3.googleusercontent.com/gps-cs-s/AC9h4nr9PsyIdKYZzuj2O4A6NReLqScM6Afizg1yapV2mH6fth55KEoQn8PNewMqeg_E5p22vb2aJA8_UMrqGtWt2gBpPm4MmKxgB_IucwqLQbeD-oyTZLj0MYr0rlKOw0WCiRlroUlpKQ=w745-h431-n-k-no"},
 { name: 'Florida', country: 'United States', coordinates: [-81.5158, 27.6648],imag : "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQgRJ3xdpW41enMVu66WSOeZDbtWs8VKZvGkM_wgHuHYmEdo3ibCbpO0m-U-jPmpemw6H_eCYBPyIVE6qkHpo6cTp-EPKnvUaxeNQOZOw"},
-
 { name: 'Lima', country: 'Peru', coordinates: [-77.0431, -12.0467],imag : "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSjbXMWUd3KSSfmSLaKrOiTDLUgKkjrXl5kIfqL71No7_s9gjpXIBQ6TeevhpZeLMwMHRdEBLrbEDyyFiu_udaUjqhgaQHe_Q4YqKzluCA"},
 { name: 'Bogota', country: 'Colombia', coordinates: [-74.0721, 4.7110],imag : "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQ4ZAQ8x7G7dIkqEdGPj5dnAQ7m2fBn41B66j8SfsbJQkHef8eEH2QUgK3MT-biWJPmc8RTP4NBshUXlHNpVa1ZaZKN2l5aU3FWEH_VYQ"},
 { name: 'Caracas', country: 'Venezuela', coordinates: [-66.9036, 10.4806],imag : "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcTOPDc2RtlllkIy1RVI8CC4fIhB2ayIl9ZPv3J8RIqXHX7jtATchUFV1IarBD2r86KbQS64dlcQVoPN2QuT52BeGUxzPV1FPIEd9RR9cRU"},
@@ -172,7 +148,6 @@ const cities: City[] = [
 { name: 'Asunción', country: 'Paraguay', coordinates: [-57.5759, -25.2637],imag : "https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcQNKG7xEJXZOUG5AQnAcurI_q9gCzHq9JGnXPubMupYGPUeNiBZoiHdneDi9onWR4xR"},
 { name: 'Brasília', country: 'Brazil', coordinates: [-47.8919, -15.7975],imag : "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcTeQyVoNR7ISJfhYCn5KzxNwllNBZpl3OAhg791wWORWdZYK-O6rG2ZQ2nkmCAN6ooMcfISBWwLlGhKk8XeICuBiZsbxS_Ho5PfY5Ky-w"},
 { name: 'Manaus', country: 'Brazil', coordinates: [-60.0217, -3.1190],imag : "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcRpVjBgLYXoNHGUU93tqz_-7QyGKvjIRFyQ3QL7_AvgaV0KqqqJ3rJzcemSfgjragb3yZmPPiN0ubPRXdRDauPTzfB4GlElzZiwEa7_Pg"},
-
 { name: 'Tunis', country: 'Tunisia', coordinates: [10.1815, 36.8065],imag : "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSlIPm7ygeDG7M54hLVihsn3815HPyNxD9I1Ak47q7OQkuz-ks222owTt1L58Xqf2-04uwebfwROTNGWHbVsWry2jkqi7SKBu3tkL5wHA	"},
 { name: 'Rabat', country: 'Morocco', coordinates: [-6.8539, 34.0084],imag : "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcSTL84txe2OzbCDUoDR3P8fSHcUDFqxNyEgT-_uIievBDhIC7zdE1nIzfe-SjP2Yu8QS604zbrqcz5HEWLzznw61bphwfb38fzN7SVZ6A"},
 { name: 'Algiers', country: 'Algeria', coordinates: [3.0588, 36.7538],imag : "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcRzCm3Afozj1fYULJbFBOFWa1M-fziOnfD2nalVXsP4w7JTYMxNpyQql_4Ym061eTLWy8etgPbMcoMxk9KOhMnWPGbfwsChwQEkwPLCKIc"},
@@ -185,13 +160,46 @@ const cities: City[] = [
 { name: 'Beijing', country: 'China', coordinates: [116.4074, 39.9042],imag : "https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcQVpfCj5TuwfTU3Gprwme15fuzZsIx6T5SiNrys1E0oNx-UHUWSdc0p8qMHG1vUPrV8TwypiN3zHuwtVMyHJuPooRuoyf8UxdNfuExyTw"},
 { name: 'Chongqing', country: 'China', coordinates: [106.5512, 29.5657],imag : "https://lh3.googleusercontent.com/gps-cs-s/AC9h4npCtW7j3efl87R6vETA5jSPgWGK8lT8XR_kUxV_tcH1Letafqh2PVf_ARxNM0adPA1PwImYmfmgg0AYd23NoM_N11cpQD4aTFh2DK8R54uEw5GxkOX29Hw20qRyb9_bpMTJDsw=w743-h429-n-k-no"},
 { name: 'Tokyo', country: 'Japan', coordinates: [139.6500, 35.6764],imag : "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQSeQok9eSVeTBJ5AuomGj38ZtfGMCM97kVur97U38I2qfFJdfKBUmrYd21UH1gkKA6d9azlekMNux3PrTVP9OnJ8kZvvjKE6_WuK59xA"},
+{ name: 'Borjomi', country: 'Georgia', coordinates: [43.3785, 41.8379], imag :"https://i.pinimg.com/1200x/96/64/f5/9664f53ac70db347a4397a354dad2738.jpg"},
+{ name: 'Akhaltsikhe', country: 'Georgia', coordinates: [42.9825, 41.6414], imag :"https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcSxp_XFEFgdU2r6WidplzJwdRPONXgF-e26eCeoNPbDNEU2XE6RztnY2LGffjYc2qI7hbKhvUYuWSMpZvOiaQAzO7ZuX0wzXveCMLqNfQ"},
+{ name: 'Poti', country: 'Georgia', coordinates: [41.6738, 42.1427], imag :"https://i.pinimg.com/1200x/d5/37/e9/d537e9fd3d6ccd035d7b167ca9fef658.jpg"},
+{ name: 'Sokhumi', country: 'Georgia', coordinates: [41.0234, 43.0015], imag :"https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQIlpx9-hv-pe_6W3pD_bVsi0mRaD26eQvXSZ89Rsi0Wm2vhd4cUEgZrwqJOhdH0iFuOX-iKe2L4ykOukzB6lty11WGzPa73rruRbkaOA"},
+{ name: 'Gagra', country: 'Georgia', coordinates: [40.2706, 43.2795], imag :"https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcSYgqO0OaTVuqAF6ZiPDc_NT06_pQzK2Xr90sRov_0fwZ05RSDmhQU0wLq2pfIXvfz4STuC5TRSwz0BVCPjpTJbddnkfm10Xmbl5YB0xw"},
+{ name: 'Martvili', country: 'Georgia', coordinates: [42.3786, 42.4142], imag :"https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrdkxowe2k0bVZc1uey6JH9R5bQoB9kGLR5Hr1GmovH3OL-elLwoadsa09r92fI6MYmh49kpzALH2cd7TxHGGNlAyK8hLjWZPEVxt2qE2olC1qHXsZ6nPcqg6k7uigWIDQUkyL0=w743-h429-n-k-no"},
+{ name: 'Mestia', country: 'Georgia', coordinates: [42.6895, 43.0335], imag :"https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSokQnCqhWX6b5MbB4q089WosIA5uMuzZD3Xdx6l2gxcojpmn9uw_32OdXOpOi6xG0yygrZZBsomYfW8eRg2KKAUwQ4mh_wW8fUPR2XZA"},
+{ name: 'Ushguli', country: 'Georgia', coordinates: [43.0189, 42.9158], imag :"https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcQRCz0xigamQFTZ1n2MIA79Nqv9G0EiPNbnNRLek81fQe8B8N23YlCcy_uNAyE8BmRTnTTUd_zJleu19zq0aV9OFE2CsRkYMnzq5OdBOQ"},
+{ name: 'Oni', country: 'Georgia', coordinates: [43.4351, 42.5779], imag :"https://lh3.googleusercontent.com/gps-cs-s/AC9h4npJ1ibHZP33WJD7MpK49_PswxtFMs_6WGTKSgD7HTl_3Cgb_UJRcamu-3uxKGgafPvXDZq1G0Gk1ZKYDXrzRBkgY3Z0IcJmA-QpSg1PnA7JQijSolF6MVm_A4exahliiNuN2jySSg=w743-h429-n-k-no"},
+{ name: 'Shovi', country: 'Georgia', coordinates: [43.6765, 42.7037], imag :"https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcRvCnSM-0gML7bh51TSZWxtVZroWoe_WebiTFIlf3KXacfWsRM-eApcwEZ6C1DpXXsSNypPFHgvfHOGXYNXLF2gXf_51EpW9F9kCmeYsQ"},
+{ name: 'Rokata', country: 'Georgia', coordinates: [44.0327, 42.4326], imag :"https://i.pinimg.com/1200x/4e/1b/c0/4e1bc025afea11ffc20282e82c30b4d5.jpg"},
+{ name: 'Rustavi', country: 'Georgia', coordinates: [45.0108, 41.5434], imag :"https://cdn.georgiantravelguide.com/storage/files/rustavi-rustavi-3.jpg"},
+{ name: 'Bakuriani', country: 'Georgia', coordinates: [43.5283, 41.7507], imag :"https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcTbUayvJn3N7b51Kp5ytZhm3U8xlETmP0c0Tfm0KGgiQ1aj13BTuNbLyjYt-2vxPyqEkSr_syR5cEIaGu39Gxo9I7cx2L2Vly1mnQ4wug"},
+{ name: 'Dmanisi', country: 'Georgia', coordinates: [44.2073, 41.3298], imag :"https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcQgsGUVwmw1KKiN7M8N9bmPfpcpgK-ATzCvhAnSdKnuyXPlpdVo0dfHkUFTmWibJa5B1344c11hkgp_UZuRF8Srly5kxhbzadsCVE64EA"},
+{ name: 'Sighnaghi', country: 'Georgia', coordinates: [45.9224, 41.6200], imag :"https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcReMOP1TLCO0VDMHdbtrs35yrs0rvcFcynuRN-zeZ-oPm3gwqGSWSorw6Rq-UgReKjTSChc1LjwfcsvStNv4xGs5hPpkvZesTg2epzyAQ"},
+{ name: 'Dedoplistskaro', country: 'Georgia', coordinates: [46.1037, 41.4657], imag :"https://i.pinimg.com/1200x/03/57/3c/03573c246e6d4370caefb049eee9bb64.jpg"},
+{ name: 'Sagarejo', country: 'Georgia', coordinates: [45.3259, 41.7369], imag :"https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcSyAd4zeZlTlMgARFO6aibf0NQT46SHMpAuMBomI0Sm3xIhwYqoOL0DrdJTSkWytUlwzT0zu_-0-YvSOuqo2BXwuDiHJQRmYqTBQolyfe8"},
+{ name: 'Shanghai', country: 'China', coordinates: [121.4737, 31.2304], imag :"https://lp-cms-production.imgix.net/2025-06/GettyImages-2213217818-16.9.jpg?auto=format,compress&q=72&w=1440&h=810&fit=crop" }, 
+{ name: 'Hong Kong', country: 'China', coordinates: [114.1694, 22.3193], imag :"https://lp-cms-production.imgix.net/2024-09/shutterstock682309588.jpg?auto=format,compress&q=72&w=1440&h=810&fit=crop" }, 
+{ name: 'Taipei', country: 'Taiwan', coordinates: [121.5654, 25.0330], imag :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPiIcgz_Y2IIv2_u-RuD9mgIra2e8euLUPBQ&s" }, 
+{ name: 'Japan', country: 'Osaka', coordinates: [135.5023, 34.6937], imag :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT5uVW4pIne7pOvIX5RLMqxfLJSMzSizkrvQ&s" }, 
+{ name: 'Seoul', country: 'South Korea', coordinates: [126.9780, 37.5665], imag :"https://media.istockphoto.com/id/2164474102/photo/illuminated-city-at-night.jpg?s=612x612&w=0&k=20&c=oqx2_sANZmuR_8OZdl9LgscjO7ThFSwkmC0-UG7dY6E=" },
+{ name: 'Pyongyang', country: 'North Korea', coordinates: [125.7625, 39.0392], imag :"https://media.cnn.com/api/v1/images/stellar/prod/pic0089307.jpg?q=w_2000,c_fill" },
+{ name: 'Bangkok', country: 'Thailand', coordinates: [100.5018, 13.7563], imag :"" },
+{ name: 'Hanoi', country: 'Vietnam', coordinates: [105.8342, 21.0278], imag :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQll_FQQmHRz5irSeMSkVTzOaTsbaER8G25ng&s" },
+{ name: 'Ho Chi Minh City', country: 'Vietnam', coordinates: [106.6297, 10.8231], imag :"https://media.istockphoto.com/id/1401126607/photo/aerial-view-of-beautiful-skyscrapers-along-the-river-at-sunset-sky.jpg?s=612x612&w=0&k=20&c=pxD5s6SKlM5k5rFilSffJOeXLxzYP3EUyw4vR2pTOxQ=" },
+{ name: 'Phnom Penh', country: 'Cambodia', coordinates: [104.8922, 11.5564], imag :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgECyuVKI62MducFmuagyxg2kPaNAKt3A1mQ&s" },
+{ name: 'Vientiane', country: 'Laos', coordinates: [102.6341, 17.9757], imag :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS9WMW0bGgF-CGulHNvRg_QLTyytpHlP0zkQ&s" },
+{ name: 'Yangon', country: 'Myanmar', coordinates: [96.1580, 16.8409], imag :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9IHzLAQL0wtHF697J22u-cI2MNJBs2F9tZQ&s" },
+{ name: 'Kuala Lumpur', country: 'Malaysia', coordinates: [101.6869, 3.1390], imag :"https://lp-cms-production.imgix.net/2024-10/shutterstock2423353777-16.9.jpg?auto=format,compress&q=72&w=1440&h=810&fit=crop" },
+{ name: 'Singapore', country: 'Singapore', coordinates: [103.8198, 1.3521], imag :"https://media.istockphoto.com/id/590050726/photo/singapore-glowing-at-night.jpg?s=612x612&w=0&k=20&c=43tSsy1yC0iOAGL3ZVq3-nl84KnmWTnHGI5mwQtp8zo=" },
+{ name: 'Jakarta', country: 'Indonesia', coordinates: [106.8456, -6.2088], imag :"https://media.istockphoto.com/id/500798563/photo/city-skyline-at-sunset-jakarta-indonesia.jpg?s=612x612&w=0&k=20&c=6v7sNMfwW56F5TxfvXH7lEh7nZynm1aRSK3fF0lICjU=" },
+{ name: 'Manila', country: 'Philippines', coordinates: [120.9842, 14.5995], imag :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRCJ6kn2MIdcQRSCdDY5r9dl4FFvIq25eC1g&s" },
+{ name: 'Bandar Seri Begawan', country: 'Brunei', coordinates: [114.9410, 4.9031], imag :"https://images.squarespace-cdn.com/content/v1/5e72c8bfe21ad940ba788673/1621101703801-L2ICL8C5N9KLP0IH6R3T/bandar-seri-begawan-thumbnail.jpg" },
+{ name: 'Dili', country: 'Timor-Leste', coordinates: [125.5736, -8.5569], imag :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWRp2TSBPvjh42RdBzPG9hMsrpu-Sq_AKVkg&s" },
+ 
 
+]
 
-
-  
-];
-
-const [customMarkers, setCustomMarkers] = useState<mapboxgl.Marker[]>([]);
+;
 
 interface WeatherMapProps {
   onCitySelect: (city: City) => void;
@@ -207,7 +215,7 @@ const WeatherMap = ({ onCitySelect, apiKey }: WeatherMapProps) => {
     if (!mapContainer.current || !apiKey) return;
 
     mapboxgl.accessToken = apiKey;
-    
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',
@@ -216,27 +224,6 @@ const WeatherMap = ({ onCitySelect, apiKey }: WeatherMapProps) => {
       pitch: 0,
     });
 
-    map.current.on('click', (e) => {
-  const coords = e.lngLat;
-
-  const el = document.createElement('div');
-  el.className = 'custom-marker';
-  el.style.width = '24px';
-  el.style.height = '24px';
-  el.style.backgroundColor = '#ff0000';
-  el.style.borderRadius = '50%';
-  el.style.border = '2px solid white';
-  el.style.boxShadow = '0 0 5px rgba(0,0,0,0.5)';
-  el.style.cursor = 'pointer';
-
-  const marker = new mapboxgl.Marker(el)
-    .setLngLat([coords.lng, coords.lat])
-    .addTo(map.current!);
-
-  setCustomMarkers((prev) => [...prev, marker]);
-  toast.success(`Pin added at [${coords.lat.toFixed(3)}, ${coords.lng.toFixed(3)}]`);
-});
-
 
     map.current.addControl(
       new mapboxgl.NavigationControl({
@@ -244,10 +231,6 @@ const WeatherMap = ({ onCitySelect, apiKey }: WeatherMapProps) => {
       }),
       'top-right'
     );
-
-    
-
-    
 
     const ZOOM_THRESHOLD = 5;
 
@@ -272,11 +255,7 @@ const WeatherMap = ({ onCitySelect, apiKey }: WeatherMapProps) => {
 
         el.addEventListener('click', () => {
           onCitySelect(city);
-          map.current?.flyTo({
-            center: city.coordinates,
-            zoom: 10,
-            duration: 1500,
-          });
+          
           toast.success(`Viewing ${city.name}, ${city.country}`);
         });
 
@@ -302,7 +281,7 @@ const WeatherMap = ({ onCitySelect, apiKey }: WeatherMapProps) => {
 
       // Listen to zoom changes
       map.current?.on('zoom', updateMarkerVisibility);
-      
+
       // Initial check
       updateMarkerVisibility();
     });
@@ -312,7 +291,7 @@ const WeatherMap = ({ onCitySelect, apiKey }: WeatherMapProps) => {
       markersRef.current = [];
       map.current?.remove();
     };
-  }, [apiKey, onCitySelect]);
+  }, [apiKey]);
 
   return (
     <div className="relative w-full h-full">

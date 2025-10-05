@@ -2,11 +2,13 @@ import { X, MapPin, Users, Cloud, Wind, Droplets, CloudDownload, Snowflake, Rain
 import { Button } from './ui/button';
 import { useState, useEffect } from 'react';
 
-const hot_percent = 66
-const cold_percent = 46
+const very_hot_percent = 66
+const very_cold_percent = 46
 const wind_percent = 33
 const wet_percent = 25
 const uncomfortable_percent = 25
+
+//const [tempProbs, setTempProbs] = useState<{[key: string]: number}>({});
 
 const months = [
   { value: 0, label: 'January' },
@@ -40,16 +42,27 @@ interface CitySidebarProps {
 const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
   const [selectedMonth, setSelectedMonth] = useState(0);
   const [selectedDay, setSelectedDay] = useState(1);
+  const [tempProbs, setTempProbs] = useState<{[key: string]: number}>({});
+  const [wind_percent, setWindPercent] = useState('..');
+  const [wet_percent, setWetPercent] = useState('..');
 
    // Add state for backend probabilities
-  const [hot_percent, setHotPercent] = useState('..');
+  const [very_hot_percent, setVeryHotPercent] = useState('..');
+  const [very_cold_percent, setVeryColdPercent] = useState('..');
   const [cold_percent, setColdPercent] = useState('..');
+  const [mild_percent, setMildPercent] = useState('..');
+  const [warm_percent, setWarmPercent] = useState('..');
   
     useEffect(() => {
     if (isOpen && city) {
 
-      setHotPercent('..');
+      setVeryHotPercent('..');
+      setVeryColdPercent('..');
+      setWindPercent('..');
+      setWetPercent('..');
       setColdPercent('..');
+      setMildPercent('..');
+      setWarmPercent('..');
 
       const year = 2026;
       const month = String(selectedMonth + 1).padStart(2, '0');
@@ -57,25 +70,40 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
       const date_str = `${year}${month}${day}`;
       const [lon, lat] = city.coordinates;
 
-      fetch('http://127.0.0.1:5000/predict_temperature', {
+      fetch('http://127.0.0.1:5000/predict_all', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ lat, lon, date_str }),
+    
       })
         .then(res => res.json())
         .then(data => {
+          setTempProbs(data.temperature || {});
           // Get probabilities from backend
-          const hot = data.probabilities?.["Very Hot"] ?? 0;
-          const cold = data.probabilities?.["Very Cold"] ?? 0;
-          setHotPercent(hot === 0 ? 0.1 : hot);
-          setColdPercent(cold === 0 ? 0.1 : cold);
+          const hot = data.temperature?.["Very Hot"] ?? 0;
+          const cold = data.temperature?.["Very Cold"] ?? 0;
+          setVeryHotPercent(hot === 0 ? 0.1 : hot);
+          setVeryColdPercent(cold === 0 ? 0.1 : cold);
+          setColdPercent(data.temperature?.["Cold"] ?? 0.1);
+          setMildPercent(data.temperature?.["Mild"] ?? 0.1);
+          setWarmPercent(data.temperature?.["Warm / Hot"] ?? 0.1);
+          // Wind
+        const wind = data.wind?.["Windy"] ?? 0;
+        setWindPercent(wind === 0 ? 0.1 : wind);
+
+        // Precipitation (Very Wet: use "Heavy" or "Final Rain")
+        const wet = data.precipitation?.["Heavy"] ?? 0;
+        setWetPercent(wet === 0 ? 0.1 : wet);
           console.log(data);
         })
         .catch(err => {
           console.error('Backend error:', err);
-          setHotPercent('..');
+          setVeryHotPercent('..');
+          setVeryColdPercent('..');
           setColdPercent('..');
-        });
+          setMildPercent('..');
+          setWarmPercent('..');
+        }),[lat, lon, date_str];
     }
   }, [isOpen, city, selectedMonth, selectedDay]);
 
@@ -183,10 +211,13 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
           <div
           className="flex-1 overflow-y-auto p-6 space-y-6 relative"
           style={{
-           backgroundImage: `url('${city.imag}')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
+           backgroundImage: `
+            radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.7) 100%),
+            url('${city.imag}')
+          `,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
           }}
         >
             {/* Weather Data in One Box - Full Width */}
@@ -199,13 +230,13 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
                     Very Hot
                   </span>
                   <div className="h-6 w-14 bg-gray-700 rounded flex items-center justify-center text-white font-semibold">
-                  {isNaN(Number(hot_percent)) ? hot_percent : Number(hot_percent).toFixed(1)}%
+                  {isNaN(Number(very_hot_percent)) ? very_hot_percent : Number(very_hot_percent).toFixed(1)}%
                 </div>
                 </div>
                 <div className="h-2 bg-gray-700 rounded-full">
                   <div
                     className="h-2 rounded-full"
-                    style={{width: isNaN(Number(hot_percent)) ? '0%' : `${hot_percent}%`,background: 'linear-gradient(90deg, rgb(255,0,0), rgb(255,69,0), rgb(255,140,0))'}}
+                    style={{width: isNaN(Number(very_hot_percent)) ? '0%' : `${very_hot_percent}%`,background: 'linear-gradient(90deg, rgb(255,0,0), rgb(255,69,0), rgb(255,140,0))'}}
                   ></div>
                 </div>
               </div>
@@ -218,13 +249,13 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
                     Very Cold
                   </span>
                   <div className="h-6 w-14 bg-gray-700 rounded flex items-center justify-center text-white font-semibold">
-                    {isNaN(Number(cold_percent)) ? cold_percent : Number(cold_percent).toFixed(1)}%
+                    {isNaN(Number(very_cold_percent)) ? very_cold_percent : Number(very_cold_percent).toFixed(1)}%
                   </div>
                 </div>
                 <div className="h-2 bg-gray-700 rounded-full">
                   <div
                     className="h-2 rounded-full"
-                    style={{width: isNaN(Number(cold_percent)) ? '0%' : `${cold_percent}%`,background: 'linear-gradient(90deg, rgb(0,191,255), rgb(135,206,250), rgb(224,255,255))'}}
+                    style={{width: isNaN(Number(very_cold_percent)) ? '0%' : `${very_cold_percent}%`,background: 'linear-gradient(90deg, rgb(0,191,255), rgb(135,206,250), rgb(224,255,255))'}}
                   ></div>
                 </div>
               </div>
@@ -236,12 +267,14 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
                     <Wind className="w-4 h-4" />
                     Very Windy
                   </span>
-                  <div className="h-6 w-14 bg-gray-700 rounded flex items-center justify-center text-white font-semibold">{wind_percent}%</div>
+                  <div className="h-6 w-14 bg-gray-700 rounded flex items-center justify-center text-white font-semibold">
+                    {isNaN(Number(wind_percent)) ? wind_percent : Number(wind_percent).toFixed(1)}%
+                  </div>
                 </div>
                 <div className="h-2 bg-gray-700 rounded-full">
                   <div
                     className="h-2 rounded-full"
-                    style={{width: `${wind_percent}%`,background: 'linear-gradient(90deg, rgb(135,206,250), rgb(175,238,238), rgb(224,255,255))'}}
+                    style={{width: isNaN(Number(wind_percent)) ? '0%' : `${wind_percent}%`,background: 'linear-gradient(90deg, rgb(135,206,250), rgb(175,238,238), rgb(224,255,255))'}}
                   ></div>
                 </div>
               </div>
@@ -253,30 +286,65 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
                     <CloudRain className="w-4 h-4" />
                     Very Wet
                   </span>
-                  <div className="h-6 w-14 bg-gray-700 rounded flex items-center justify-center text-white font-semibold">{wet_percent}%</div>
+                  <div className="h-6 w-14 bg-gray-700 rounded flex items-center justify-center text-white font-semibold">
+                    {isNaN(Number(wet_percent)) ? wet_percent : Number(wet_percent).toFixed(1)}%
+                  </div>
                 </div>
                 <div className="h-2 bg-gray-700 rounded-full">
                   <div
                     className="h-2 rounded-full"
-                    style={{width: `${wet_percent}%`,background: 'linear-gradient(90deg, rgb(0,105,148), rgb(0,168,232), rgb(173,216,230))'}}
+                    style={{width: isNaN(Number(wet_percent)) ? '0%' : `${wet_percent}%`,background: 'linear-gradient(90deg, rgb(0,105,148), rgb(0,168,232), rgb(173,216,230))'}}
                   ></div>
                 </div>
               </div>
             </div>
 
             <div className="bg-black rounded-lg p-4 space-y-4 w-[94%] ml-0 h-56">
-              {/* Very Hot */}
-              
-              
-              {/* Very Cold */}
-             
-             
-              
-              {/* Very Windy */}
-             
-
-              {/* Very Wet */}
-              
+                    {/* Vertical histogram for temperature categories */}
+                  <div className="relative flex flex-row items-end h-48 w-full">
+            {/* "Temperature" label on top right */}
+            <span className="absolute top-0 right-2 text-white text-sm font-semibold z-20">
+              Expected Temperature °C
+            </span>
+            {/* Probability axis */}
+            <div className="flex flex-col items-center mr-2" style={{ height: '100%' }}>
+              <span className="text-xs text-white z-10 mt-2">100%</span>
+              <div className="relative flex-1 w-full flex justify-center">
+                <div className="absolute left-1/2 top-4 bottom-4 w-px bg-white opacity-70"></div>
+              </div>
+              <span className="text-xs text-white z-10">0%</span>
+            </div>
+            {/* Bars */}
+            <div className="flex flex-row items-end h-full w-full justify-between">
+              {[
+                { label: "Very Cold", color: "bg-blue-400", value: Number(very_cold_percent), range: "<0°" },
+                { label: "Cold", color: "bg-blue-200", value: Number(cold_percent), range: "0-10°" },
+                { label: "Mild", color: "bg-green-300", value: Number(mild_percent), range: "10-20°" },
+                { label: "Warm", color: "bg-yellow-300", value: Number(warm_percent), range: "20-30°" },
+                { label: "Very Hot", color: "bg-red-500", value: Number(very_hot_percent), range: ">30°" },
+              ].map((cat) => (
+                <div key={cat.label} className="flex flex-col items-center flex-1">
+                  {/* Percent on top */}
+                  <span className="mb-1 text-xs text-white font-semibold">
+                    {isNaN(cat.value) ? '..' : cat.value.toFixed(1)}%
+                  </span>
+                  {/* Bar */}
+                  <div
+                    className={`w-8 ${cat.color} rounded-t`}
+                    style={{
+                      height: `${isNaN(cat.value) ? 0 : cat.value * 1.15}px`,
+                      minHeight: '2px',
+                      transition: 'height 0.5s'
+                    }}
+                  ></div>
+                  {/* Label */}
+                  <span className="mt-2 text-xs text-white">{cat.label}</span>
+                  {/* Temperature range below */}
+                  <span className="text-xs text-gray-300">{cat.range}</span>
+                </div>
+              ))}
+            </div>
+      </div>  
             </div>
             
             {/* Future Features Placeholder */}

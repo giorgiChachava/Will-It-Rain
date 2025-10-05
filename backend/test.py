@@ -27,12 +27,33 @@ HEAVY_THRESHOLD   = 15.0
  
 # Wind thresholds (mph) and conversion (POWER WS10M/WS10M_MAX are in m/s)
 MPH_PER_MS = 2.23693629
-WINDY_THRESHOLD_MPH = 11.5
+WINDY_THRESHOLD_MPH = 8.0
 WINDY_THRESHOLD_MS  = WINDY_THRESHOLD_MPH / MPH_PER_MS  # ≈ 3.58 m/s
  
 # =========================
 # === INPUT ===============
 # =========================
+def read_user_inputs():
+    lat_str = input("Latitude (e.g., 41.7151): ").strip()
+    lon_str = input("Longitude (e.g., 44.8271): ").strip()
+    date_str = input("Target date (YYYY-MM-DD or YYYYMMDD): ").strip()
+ 
+    try:
+        lat = float(lat_str); lon = float(lon_str)
+    except ValueError:
+        raise ValueError("Latitude/Longitude must be numeric.")
+    if not (-90 <= lat <= 90):   raise ValueError("Latitude must be between -90 and 90.")
+    if not (-180 <= lon <= 180): raise ValueError("Longitude must be between -180 and 180.")
+ 
+    if "-" not in date_str and len(date_str) == 8:
+        date_parsed = pd.to_datetime(date_str, format="%Y%m%d", errors="coerce")
+    else:
+        date_parsed = pd.to_datetime(date_str, errors="coerce")
+    if pd.isna(date_parsed):
+        raise ValueError("Invalid date. Use YYYY-MM-DD or YYYYMMDD.")
+ 
+    return float(lat), float(lon), date_parsed.strftime("%Y-%m-%d")
+ 
 # =========================
 # === HISTORY WINDOW ======
 # =========================
@@ -318,7 +339,63 @@ def category_probabilities_weighted_days(df, target_date, column, categories,
 # =========================
 # === MAIN RUNNER =========
 # =========================
-
+if __name__ == "__main__":
+    lat, lon, target_date = read_user_inputs()
+ 
+    # Build history window & fetch once
+    start_str, end_str, hist_start_year, hist_end_year = compute_history_window(target_date, rolling_years=ROLLING_YEARS)
+    df_all = fetch_power(lat, lon, start_str, end_str)
+ 
+    # ---- Rain (Level-2) ----
+    rain_out = level2_rain(lat, lon, target_date, df_all)
+ 
+    def pct(x):
+        return "—" if x is None or np.isnan(x) else f"{100*x:0.1f}%"
+ 
+    print("\n== Final Rain Probability ==")
+    print(f"Final P(rain): {pct(rain_out['P_rain_final'])}")
+    print(f"P(no rain) : {pct(rain_out['P_no_rain'])}")
+    print(f"P(moderate): {pct(rain_out['P_moderate'])}")
+    print(f"P(heavy)   : {pct(rain_out['P_heavy'])}")
+ 
+    # ---- Temperature categories (use T2M_MAX) ----
+    if "T2M_MAX" in df_all.columns:
+        temp_categories = ["Very Cold", "Cold", "Mild", "Warm / Hot", "Very Hot"]
+        cats_t, probs_t = category_probabilities_weighted_days(
+            df_all, target_date, "T2M_MAX", temp_categories,
+            last_n_years=ROLLING_YEARS, half_window_days=TW_HALF_WINDOW_DAYS,
+            categorizer=categorize_temp_simple
+        )
+        print("\n== Temperature Category Probabilities (weighted) ==")
+        if probs_t is None:
+            print("No temperature data in the chosen window.")
+        else:
+            for c in cats_t:
+                print(f"{c:<12}: {probs_t.get(c, 0.0):5.1f}%")
+            pred_t = probs_t.idxmax(); conf_t = float(probs_t.max())
+            print(f"Predicted: {pred_t} ({conf_t:0.1f}%)")
+    else:
+        print("\n(Temperature variable T2M_MAX not available.)")
+ 
+    # ---- Wind categories (use WS10M_MAX in m/s, threshold ~3.6 m/s) ----
+    if "WS10M_MAX" in df_all.columns:
+        wind_categories = ["No Wind", "Windy"]
+        cats_w, probs_w = category_probabilities_weighted_days(
+            df_all, target_date, "WS10M_MAX", wind_categories,
+            last_n_years=ROLLING_YEARS, half_window_days=TW_HALF_WINDOW_DAYS,
+            categorizer=categorize_wind_speed_ms
+        )
+        print("\n== Wind Category Probabilities (weighted) ==")
+        if probs_w is None:
+            print("No wind data in the chosen window.")
+        else:
+            for c in cats_w:
+                print(f"{c:<8}: {probs_w.get(c, 0.0):5.1f}%")
+            pred_w = probs_w.idxmax(); conf_w = float(probs_w.max())
+            print(f"Predicted: {pred_w} ({conf_w:0.1f}%)")
+    else:
+        print("\n(Wind variable WS10M_MAX not available.)")
+ 
 @app.route("/predict_all", methods=["POST"])
 def predict_all():
     data = request.json
