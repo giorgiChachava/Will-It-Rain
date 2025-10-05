@@ -1,6 +1,6 @@
 import { X, MapPin, Users, Cloud, Wind, Droplets, CloudDownload, Snowflake, Rainbow, CloudRain, Thermometer, Sun, Calendar } from 'lucide-react';
 import { Button } from './ui/button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const hot_percent = 66
 const cold_percent = 46
@@ -39,7 +39,46 @@ interface CitySidebarProps {
 
 const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
   const [selectedMonth, setSelectedMonth] = useState(0);
+  const [selectedDay, setSelectedDay] = useState(1);
+
+   // Add state for backend probabilities
+  const [hot_percent, setHotPercent] = useState('..');
+  const [cold_percent, setColdPercent] = useState('..');
   
+    useEffect(() => {
+    if (isOpen && city) {
+
+      setHotPercent('..');
+      setColdPercent('..');
+
+      const year = 2026;
+      const month = String(selectedMonth + 1).padStart(2, '0');
+      const day = String(selectedDay).padStart(2, '0');
+      const date_str = `${year}${month}${day}`;
+      const [lon, lat] = city.coordinates;
+
+      fetch('http://127.0.0.1:5000/predict_temperature', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lat, lon, date_str }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          // Get probabilities from backend
+          const hot = data.probabilities?.["Very Hot"] ?? 0;
+          const cold = data.probabilities?.["Very Cold"] ?? 0;
+          setHotPercent(hot === 0 ? 0.1 : hot);
+          setColdPercent(cold === 0 ? 0.1 : cold);
+          console.log(data);
+        })
+        .catch(err => {
+          console.error('Backend error:', err);
+          setHotPercent('..');
+          setColdPercent('..');
+        });
+    }
+  }, [isOpen, city, selectedMonth, selectedDay]);
+
   if (!city) return null;
 
   const getDaysInMonth = (month: number) => {
@@ -61,7 +100,7 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
       {/* Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 "
           onClick={onClose}
         />
       )}
@@ -90,10 +129,11 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
              <div className="flex items-center gap-3">
 
               {/* Day Selection Dropdown */}
-              <div className="relative">
-                <select 
+               <div className="relative">
+                <select
                   className="appearance-none bg-gray-800/80 border border-gray-600 rounded-lg px-4 py-2 pr-8 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent backdrop-blur-sm"
-                  defaultValue="1"
+                  value={selectedDay}
+                  onChange={e => setSelectedDay(Number(e.target.value))}
                 >
                   {days.map((day) => (
                     <option key={day.value} value={day.value}>
@@ -129,7 +169,7 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
               </div>
               {/* Close Button */}
               <Button
-                variant="ghost"
+                variant="outline"
                 size="icon"
                 onClick={onClose}
                 className="hover:bg-primary/10"
@@ -158,12 +198,14 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
                     <Sun className="w-4 h-4" />
                     Very Hot
                   </span>
-                  <div className="h-6 w-14 bg-gray-700 rounded flex items-center justify-center text-white font-semibold">{hot_percent}%</div>
+                  <div className="h-6 w-14 bg-gray-700 rounded flex items-center justify-center text-white font-semibold">
+                  {isNaN(Number(hot_percent)) ? hot_percent : Number(hot_percent).toFixed(1)}%
+                </div>
                 </div>
                 <div className="h-2 bg-gray-700 rounded-full">
                   <div
                     className="h-2 rounded-full"
-                    style={{width: `${hot_percent}%`,background: 'linear-gradient(90deg, rgb(255,0,0), rgb(255,69,0), rgb(255,140,0))'}}
+                    style={{width: isNaN(Number(hot_percent)) ? '0%' : `${hot_percent}%`,background: 'linear-gradient(90deg, rgb(255,0,0), rgb(255,69,0), rgb(255,140,0))'}}
                   ></div>
                 </div>
               </div>
@@ -175,12 +217,14 @@ const CitySidebar = ({ city, isOpen, onClose }: CitySidebarProps) => {
                     <Snowflake className="w-4 h-4" />
                     Very Cold
                   </span>
-                  <div className="h-6 w-14 bg-gray-700 rounded flex items-center justify-center text-white font-semibold">{cold_percent}%</div>
+                  <div className="h-6 w-14 bg-gray-700 rounded flex items-center justify-center text-white font-semibold">
+                    {isNaN(Number(cold_percent)) ? cold_percent : Number(cold_percent).toFixed(1)}%
+                  </div>
                 </div>
                 <div className="h-2 bg-gray-700 rounded-full">
                   <div
                     className="h-2 rounded-full"
-                    style={{width: `${cold_percent}%`,background: 'linear-gradient(90deg, rgb(0,191,255), rgb(135,206,250), rgb(224,255,255))'}}
+                    style={{width: isNaN(Number(cold_percent)) ? '0%' : `${cold_percent}%`,background: 'linear-gradient(90deg, rgb(0,191,255), rgb(135,206,250), rgb(224,255,255))'}}
                   ></div>
                 </div>
               </div>

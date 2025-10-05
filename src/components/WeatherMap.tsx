@@ -191,6 +191,8 @@ const cities: City[] = [
   
 ];
 
+const [customMarkers, setCustomMarkers] = useState<mapboxgl.Marker[]>([]);
+
 interface WeatherMapProps {
   onCitySelect: (city: City) => void;
   apiKey: string;
@@ -214,6 +216,27 @@ const WeatherMap = ({ onCitySelect, apiKey }: WeatherMapProps) => {
       pitch: 0,
     });
 
+    map.current.on('click', (e) => {
+  const coords = e.lngLat;
+
+  const el = document.createElement('div');
+  el.className = 'custom-marker';
+  el.style.width = '24px';
+  el.style.height = '24px';
+  el.style.backgroundColor = '#ff0000';
+  el.style.borderRadius = '50%';
+  el.style.border = '2px solid white';
+  el.style.boxShadow = '0 0 5px rgba(0,0,0,0.5)';
+  el.style.cursor = 'pointer';
+
+  const marker = new mapboxgl.Marker(el)
+    .setLngLat([coords.lng, coords.lat])
+    .addTo(map.current!);
+
+  setCustomMarkers((prev) => [...prev, marker]);
+  toast.success(`Pin added at [${coords.lat.toFixed(3)}, ${coords.lng.toFixed(3)}]`);
+});
+
 
     map.current.addControl(
       new mapboxgl.NavigationControl({
@@ -221,6 +244,10 @@ const WeatherMap = ({ onCitySelect, apiKey }: WeatherMapProps) => {
       }),
       'top-right'
     );
+
+    
+
+    
 
     const ZOOM_THRESHOLD = 5;
 
